@@ -103,6 +103,8 @@ known_primes = [
 , 7727, 7741, 7753, 7757, 7759, 7789, 7793, 7817, 7823, 7829\
 , 7841, 7853, 7867, 7873, 7877, 7879, 7883, 7901, 7907, 7919]
 
+known_primes_membership = set(known_primes)
+
 def primes_lower_than(n):
   """Returns a list of the primes which are lower than n
   """
@@ -145,6 +147,7 @@ def _add_next_prime(sieve, starting_idx):
   while idx < len(sieve):
     if sieve[idx]:
       known_primes.append(sieve[idx])
+      known_primes_membership.add(sieve[idx])
       return idx + 1
 
     idx += 1
@@ -183,6 +186,12 @@ def nth_prime(n):
   seed_known_primes_up_to(upper_sentinel_for_nth_prime(n))
 
   return known_primes[n - 1]
+
+def is_prime(n):
+  """Returns whether n is a prime number
+  """
+  seed_known_primes_up_to(n)
+  return n in known_primes_membership
 
 def sln():
   return nth_prime(10001)
