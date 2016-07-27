@@ -154,14 +154,15 @@ def _add_next_prime(sieve, starting_idx):
 
   return idx
 
-def seed_known_primes_up_to(sieve_upper_bound):
+def seed_known_primes_up_to(upper_bound):
   """Seed known_primes to have up to primes which are larger than
   the upper bound.
   Does nothing for primes which have already been calculated.
   """
-  if known_primes[-1] > sieve_upper_bound:
+  if known_primes[-1] > upper_bound:
     return
 
+  sieve_upper_bound = 2 * (upper_bound + 1)
   sieve_highwater_mark = 0
   sieve_lower_bound = known_primes[-1] + 1
   sieving_lower_bound = sieve_lower_bound
