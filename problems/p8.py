@@ -31,8 +31,6 @@ def int_at(number_iterable, idx):
 
 def max_product(number_iterable, width):
   l = len(number_iterable)
-
-  # initialize the prod to the width
   running_prod = 0
   max_prod = running_prod
 
