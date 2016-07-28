@@ -2,13 +2,14 @@
 import math
 import p7
 
-triangle_numbers = [1, 3, 6, 10, 15, 21, 28]
 _known_factorizations = {}
 
 def known_factorizations(n):
   """Returns either a known factorization
   for a number, or False if none exists.
   """
+  if n == 0:
+    raise Exception("0 has no known factors")
   if p7.is_prime(n):
     return {1: n}
   return _known_factorizations.get(n, False)
@@ -54,17 +55,6 @@ def factorize(n):
   _known_factorizations[n] = factors_pairs
   return factors_pairs
 
-def seed_triangle_numbers_up_to_len(n):
-  """Insert triangle numbers into triangle_numbers till
-  it is of len at least n
-  """
-  idx = len(triangle_numbers)
-  if n < idx:
-    return
-  while idx < (2 * n):
-    idx += 1
-    triangle_numbers.append(triangle_numbers[-1] + idx)
-
 def factors(n):
   """Return just the factors of n, not the factor pairs
   """
@@ -76,17 +66,40 @@ def factors(n):
   return factors
 
 def first_triangle_number_to_have_gt_n_factors(n):
-  last_triangle_number = 0
-  idx = 0
-  while True:
-    seed_triangle_numbers_up_to_len(idx + 1)
-    if last_triangle_number != triangle_numbers[-1]:
-      last_triangle_number = triangle_numbers[-1]
-      p7.seed_known_primes_up_to(last_triangle_number)
-    if len(factors(triangle_numbers[idx])) > n:
-      return triangle_numbers[idx]
-    idx += 1
+  # http://www.mathblog.dk/files/euler/Problem12.cs
+  # https://en.wikipedia.org/wiki/Coprime_integers
+  #
+  # Summary of above sources:
+  #
+  # kth triangle number = SUM i to k i
+  # = k (k + 1) / 2
+  # => if k is even then k/2, (k + 1) are coprime
+  # => if k is odd then (k + 1)/2, k are coprime
+  #
+  # since the kth triangle number has two coprime factors,
+  # it must follow, that its number of divisors is the
+  # number of divisors for each of its coprimes multiplied
+  # by each other.
+
+  # silly edge case, but this cleans up what follows dramatically
+  if n == 0:
+    return 1
+
+  k = 2
+  number_of_divisors = 0
+  number_of_divisors1 = 2
+  number_of_divisors2 = 1
+
+  while number_of_divisors < n:
+    if k % 2 == 0:
+      number_of_divisors1 = len(factors(k + 1))
+    else:
+      number_of_divisors2 = len(factors((k + 1) / 2))
+
+    number_of_divisors = number_of_divisors1 * number_of_divisors2
+    k += 1
+
+  return k * (k - 1) / 2
 
 def sln():
-  p7.seed_known_primes_up_to(80000000)
   return first_triangle_number_to_have_gt_n_factors(500)
