@@ -10,7 +10,7 @@ def known_factorizations(n):
   """
   if n == 0:
     raise Exception("0 has no known factors")
-  if p7.is_prime(n):
+  if p7.is_prime(n, False):
     return {1: n}
   return _known_factorizations.get(n, False)
 
@@ -39,8 +39,8 @@ def factorize(n):
 
   factors_pairs = {1: n}
 
-  upper_bound = int(math.floor(math.sqrt(n)));
-  p7.seed_known_primes_up_to(upper_bound);
+  upper_bound = int(math.floor(math.sqrt(n)))
+  p7.seed_known_primes_up_to(upper_bound)
 
   for lower_factor in p7.known_primes:
     if lower_factor > upper_bound:
@@ -84,6 +84,10 @@ def first_triangle_number_to_have_gt_n_factors(n):
   # silly edge case, but this cleans up what follows dramatically
   if n == 0:
     return 1
+  elif n == 1:
+    return 3
+  elif n == 2:
+    return 6
 
   k = 2
   number_of_divisors = 0

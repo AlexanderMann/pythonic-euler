@@ -188,10 +188,13 @@ def nth_prime(n):
 
   return known_primes[n - 1]
 
-def is_prime(n):
-  """Returns whether n is a prime number
+def is_prime(n, allow_seed=True):
+  """Returns whether n is a prime number.
+  If allow_seed is False, is_prime will potentially
+  return a false negative.
   """
-  seed_known_primes_up_to(n)
+  if allow_seed:
+    seed_known_primes_up_to(n)
   return n in known_primes_membership
 
 def sln():
