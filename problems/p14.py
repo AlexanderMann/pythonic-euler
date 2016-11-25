@@ -45,7 +45,6 @@ class CollatzIterator (object):
     return known_lengths[self.start]
 
 def longest_collatz_start_lt(n):
-  # this is brute force, there has to be a better way
   longest_len = 0
   longest_start = None
   for start in xrange(n - 1, 0, -1):
